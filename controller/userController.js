@@ -3,6 +3,13 @@ const { User } = require("../models");
 
 module.exports = {
   async getUsers(req, res) {
+    const userToken = req.user;
+    if (userToken.role === "member") {
+      return res.status(200).json({
+        success: false,
+        message: "Anda Tidak Memiliki Akses!",
+      });
+    }
     try {
       const users = await User.findAll({
         attributes: ["id", "email", "role"],
@@ -34,6 +41,13 @@ module.exports = {
     }
   },
   async createAdmin(req, res) {
+    const userToken = req.user;
+    if (userToken.role !== "superadmin") {
+      return res.status(200).json({
+        success: false,
+        message: "Anda Tidak Memiliki Akses!",
+      });
+    }
     try {
       const data = await userService.createAdmin(req.body);
       res.status(201).json(data);
@@ -43,14 +57,14 @@ module.exports = {
       });
     }
   },
-  async logout (req, res) {
+  async logout(req, res) {
     const refreshToken = req.body.token;
 
     if (!refreshToken) return res.sendStatus(204);
 
     res.clearCookie("accessToken");
     return res
-        .status(200)
-        .json({ success: true, message: "Logout Successfully" });
-  }
+      .status(200)
+      .json({ success: true, message: "Logout Successfully" });
+  },
 };
