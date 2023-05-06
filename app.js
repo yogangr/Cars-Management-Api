@@ -11,6 +11,7 @@ const {
   login,
   createAdmin,
   getUsers,
+  logout
 } = require("./controller/userController");
 const { verifyToken } = require("./middleware/verifyToken");
 const prefix = "/v1/api/";
@@ -24,6 +25,7 @@ app.post(prefix + "register", register);
 app.post(prefix + "login", login);
 app.post(prefix + "createadmin", verifyToken, createAdmin);
 app.get(prefix + "users", verifyToken, getUsers);
+app.delete(prefix + "logout", logout);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

@@ -43,4 +43,14 @@ module.exports = {
       });
     }
   },
+  async logout (req, res) {
+    const refreshToken = req.body.token;
+
+    if (!refreshToken) return res.sendStatus(204);
+
+    res.clearCookie("accessToken");
+    return res
+        .status(200)
+        .json({ success: true, message: "Logout Successfully" });
+  }
 };

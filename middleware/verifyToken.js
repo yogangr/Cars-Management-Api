@@ -4,7 +4,7 @@ exports.verifyToken = (req, res, next) => {
   let token = req.headers["authorization"];
 
   if (token != null && token != undefined) {
-    token = token.split(" ")[1]; //Access token
+    token = token.split(" ")[1];
 
     jwt.verify(token, "access", async (err, user) => {
       if (user) {
